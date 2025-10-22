@@ -9,9 +9,17 @@ lead@vauag.ru
 Rust + EGUI + EGUI_PLOT 
 
 default UDP port 55511
-External device as MCU or Oneboard PC send data in packet 0x5533..etc. format.  
+External device as MCU or Oneboard PC send data in packet 0x5533..etc. format.  Timestamp increase in usecond the device. 
 
 ![view text](img/readme/readme1.png "Main view")
+
+Utilite have light interface. Support setting color, conversion coefficient to physical units and reduction for view any unit on one chart.  One time values show in left panel. 
+
+Check box "RealTime" start recive data stream. 
+
+![view text](img/readme/readme2.png "Settings")
+Also can save scope/settings and export to CSV file. 
+Setting adds to scope file and after open scope upload its settings. 
 
 <p> Shotcut: <br> 
 Ctrl+A + wheel - Y axis chart 1 zoom <br>
