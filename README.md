@@ -9,13 +9,17 @@ lead@vauag.ru
 Rust + EGUI + EGUI_PLOT 
 
 default UDP port 55511
+External device as MCU or Oneboard PC send data in packet 0x5533..etc. format.  
 
-Shotcut: 
-Ctrl+A + wheel - Y axis chart 1 zoom
-Ctrl+Z + wheel - Y axis chart 2 zoom
-C - Set begin timestamp for CSV
-V - Set stop timestamp for CSV
-wheel - X axis zoom in view mode
+![view text](img/readme/readme1.png "Main view")
+
+<p> Shotcut: <br> 
+Ctrl+A + wheel - Y axis chart 1 zoom <br>
+Ctrl+Z + wheel - Y axis chart 2 zoom<br>
+C - Set begin timestamp for CSV<br>
+V - Set stop timestamp for CSV<br>
+wheel - X axis zoom in view mode<br>
+</p>
 
 
 Sample format:
