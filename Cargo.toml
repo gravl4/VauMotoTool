@@ -1,0 +1,21 @@
+[package]
+name = "VauMotoTool"
+version = "0.1.0"
+edition = "2021"
+
+[package.metadata.cargo-machete]
+ignored = ["image"] # We only use the dependency to add more features to it
+
+[dependencies]
+#eframe = { version = "0.31.0", default-features = false, features = ["default_fonts", "glow", "persistence", "wayland", "x11"] }
+eframe = { version = "0.31.0", default-features = false, features = ["default_fonts", "wgpu", "persistence", "wayland", "x11"] }
+rfd = "0.15"
+chrono = "0.4.39"
+#egui_plot = "0.31.0"
+egui_plot = { path = "./egui_plot-0.31.0" }
+bincode = "2.0.1"
+serde = "1.0.217"
+tokio = { version = "1.43.0", features = ["full"] }
+rayon = "1.10.0"
+egui_extras = { version = "0.31.1", features = ["default", "all_loaders"] }
+image = { version = "0.25.6", features = ["png"] }
