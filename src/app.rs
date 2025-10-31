@@ -12,7 +12,7 @@ use std::sync::{ RwLock, Arc}; //, Mutex
 //use std::fs::File;
 //use std::io::prelude::*;
 use std::io::Write;
-
+use rayon::prelude::*;
 //use chrono::DateTime; //Local, 
 
 //use crate::rtmap;
@@ -126,6 +126,7 @@ pub const MAX_POINTS: usize = 5*1000000; //1c на 1МГц  1мин на 1МГц
         duration: usize, 
         pub achanels: Vec<AChanelSettings>, // настройки каналов Analog
         pub dchanels: Vec<DChanelSettings>, // настройки каналов Digital
+        pub bignum: usize,
     }
     impl AppSettings {
         pub fn new()-> Self {
@@ -176,6 +177,7 @@ pub const MAX_POINTS: usize = 5*1000000; //1c на 1МГц  1мин на 1МГц
                 duration: APPDURATION_MS, 
                 achanels, 
                 dchanels,
+                bignum: 0,
             }
         }
     }
@@ -499,6 +501,7 @@ pub const MAX_POINTS: usize = 5*1000000; //1c на 1МГц  1мин на 1МГц
                         }
                     };
                     if ui.checkbox( &mut self.xformatter, "X-Formatter").clicked() { }
+
                 }
                 {
                     /*if self.csvtimestamp1.is_some() {
@@ -552,11 +555,38 @@ pub const MAX_POINTS: usize = 5*1000000; //1c на 1МГц  1мин на 1МГц
                 ui.separator();
                 // вывод мгновенных значений
 
+                if self.appsettings.bignum > 0 {
+                    let num = self.appsettings.bignum-1;
+                    let conv = self.mapsw.borrow().convertrd.aconverter[num];
+                    let name = self.appsettings.achanels[num].name.clone(); 
+                    let color = self.appsettings.achanels[num].color;
+                    if self.appstate.read().unwrap().get_rt() == true {
+                        if let Some(rtp) = self.rtmap.read().unwrap().rtmap.last() {
+                            //if let Ok(pp) = self.mapsw.borrow().get_insta(&self.rtmap.read().unwrap().rtmap, tm) {
+                            //}
+                            let val = rtp.achanels[num]; 
+                            ui.label(RichText::new(format!("{}", name)).color(color) );
+                            ui.label(RichText::new(format!("{:.3}", (val as f64)*conv)).color(color).size(30.0));
+                        }
+                    }
+                    //else {
+
+                    //}
+                }
                 
                 if self.pcursor.is_some() && self.appstate.read().unwrap().get_rt() == false {
                     let xtimestamp = self.pcursor.unwrap().x as i64; 
 
                     if let Ok(pp) = self.mapsw.borrow().get_insta(&self.rtmap.read().unwrap().rtmap, xtimestamp) {
+                        if self.appsettings.bignum > 0 {
+                            let num = self.appsettings.bignum-1;
+                           // let conv = self.mapsw.borrow().convertrd.aconverter[num];
+                            let name = self.appsettings.achanels[num].name.clone(); 
+                            let color = self.appsettings.achanels[num].color;     
+                            let val = pp.0[num];  
+                            ui.label(RichText::new(format!("{}", name)).color(color) );
+                            ui.label(RichText::new(format!("{:.3}", val)).color(color).size(30.0));                      
+                        }
                         pp.0.iter().enumerate().for_each(|x| {
                             if self.appsettings.achanels[x.0].viewinchart || self.appsettings.achanels[x.0].viewinchart2 {
                                 let name = self.appsettings.achanels[x.0].name.clone(); 
@@ -944,6 +974,10 @@ pub const MAX_POINTS: usize = 5*1000000; //1c на 1МГц  1мин на 1МГц
                    // appx.appstate.write().unwrap().duration = duration;
                     appx.appstate.write().unwrap().set_duration(duration);
                 }
+                ui.separator();
+                ui.label("Big view");
+                let bignum = &mut appx.appsettings.bignum; 
+                ui.add(egui::DragValue::new(bignum).speed(1).range(RangeInclusive::new(0, ACHANELS)));                
 
             });
 
