@@ -1,6 +1,8 @@
 VauMotoTool - утилита мониторинга электропривода
 Motor drivers monitoring utilite
 
+ready-to-run binaries in BUILDS folder
+
 www.vauag.ru
 www.vauag.com
 +7-909-520-4224
@@ -8,7 +10,7 @@ lead@vauag.ru
 
 Rust + EGUI + EGUI_PLOT. The VauMoto tool utilite require Linux Mint/Ubuntu/Debian.
 
-default UDP port 55511
+default UDP port 55512
 External device as MCU or Oneboard PC send data in packet 0x5533..etc. format.  Timestamp increase in usecond the device.
 
 ![view text](img/readme/readme1.png "Main view")
@@ -63,3 +65,5 @@ Sample length 44 bytes.
         while(sum>>16) sum = (uint16_t)sum+(sum>>16);
         return ~((uint16_t)sum); //сдесь мы переобразовали к виду big endian и сделали побитовую инверсию
     }
+
+Samples test generator in test_generator folder. Start up $python udp-sender.py
